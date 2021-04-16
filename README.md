@@ -21,3 +21,8 @@ Inspired by node-glpk (https://github.com/hgourvest/node-glpk)
 
 See the LICENSE file
 
+## Links
+
+* GLPK: https://www.gnu.org/software/glpk/
+* emscripten: https://emscripten.org/
+* cmake: https://cmake.org/
