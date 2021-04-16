@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(glpk-wasm VERSION 5.0)
-add_link_options(--bind)
+add_link_options(--bind -s ENVIRONMENT=web)
 
 include_directories(
         src/glpk

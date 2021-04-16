@@ -6,17 +6,18 @@
 #include <emscripten/html5.h>
 #include "glpk/glpk.h"
 
+#include "problem.hpp"
+
 using namespace emscripten;
 
 extern "C" {
-    void error_hook(void *s)
-    {
-        emscripten_throw_string((const char *)s);
+    void error_hook(void *s) {
+        emscripten_throw_string((const char *) s);
     }
 
-    int main(int argc, char **argv)
-    {
-        glp_error_hook(error_hook, NULL);
+    int main(int argc, char **argv) {
+        emscripten_console_log("Initialising GLPK");
+        glp_error_hook(error_hook, nullptr);
     }
 }
 
@@ -69,9 +70,32 @@ namespace glpk {
         uint8_t nofeas;
         uint8_t opt;
         uint8_t unbnd;
-    };
 
-    static struct glpk_consts _glpk_consts = {
+        // Simplex message levels
+        uint8_t msg_off;
+        uint8_t msg_err;
+        uint8_t msg_on;
+        uint8_t msg_all;
+        uint8_t msg_dbg;
+
+        // Simplex methods
+        uint8_t primal;
+        uint8_t dualp;
+        uint8_t dual;
+
+        // Simplex pricing
+        uint8_t pt_std;
+        uint8_t pt_pse;
+
+        // Simplex radio test
+        uint8_t rt_std;
+        uint8_t rt_har;
+        uint8_t rt_flip;
+
+        // Simplex a or n
+        uint8_t use_at;
+        uint8_t use_nt;
+    } _glpk_consts = {
             .major_version = GLP_MAJOR_VERSION,
             .minor_version = GLP_MINOR_VERSION,
 
@@ -110,6 +134,26 @@ namespace glpk {
             .nofeas = GLP_NOFEAS,
             .opt = GLP_OPT,
             .unbnd = GLP_UNBND,
+
+            .msg_off = GLP_MSG_OFF,
+            .msg_err = GLP_MSG_ERR,
+            .msg_on = GLP_MSG_ON,
+            .msg_all = GLP_MSG_ALL,
+            .msg_dbg = GLP_MSG_DBG,
+
+            .primal = GLP_PRIMAL,
+            .dualp = GLP_DUALP,
+            .dual = GLP_DUAL,
+
+            .pt_std = GLP_PT_STD,
+            .pt_pse = GLP_PT_PSE,
+
+            .rt_std = GLP_RT_STD,
+            .rt_har = GLP_RT_HAR,
+            .rt_flip = GLP_RT_FLIP,
+
+            .use_at = GLP_USE_AT,
+            .use_nt = GLP_USE_NT,
     };
 
     EMSCRIPTEN_BINDINGS(glpk_consts) {
